@@ -1,5 +1,9 @@
 package com.sofang.config;
 
+import com.sofang.security.AuthProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,9 +39,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**").hasAnyRole("ADMIN","USER")
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/login")
-                .and();
+                .loginProcessingUrl("/login")  //配置入口角色登录
+                .and()
+                .logout()
+                .logoutSuccessUrl("/logout/page")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true).and();
+
+        http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
     }
 
+    @Autowired
+    public void configGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authProvider()).eraseCredentials(true);
+    }
+
+    @Bean
+    public AuthProvider authProvider(){
+        return new AuthProvider();
+    }
 
 }
