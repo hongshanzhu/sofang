@@ -1,6 +1,7 @@
 package com.sofang.config;
 
 import com.sofang.security.AuthProvider;
+import com.sofang.security.LoginAuthFailHandler;
 import com.sofang.security.LoginUrlEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/login")  //配置入口角色登录
+                .failureHandler(authFailHandler())
                 .and()
                 .logout()
                 .logoutSuccessUrl("/logout/page")
@@ -66,6 +68,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginUrlEntryPoint urlEntryPoint(){
         return new LoginUrlEntryPoint("/user/login");
+    }
+
+    @Bean
+    public LoginAuthFailHandler authFailHandler(){
+        return new LoginAuthFailHandler(urlEntryPoint());
     }
 
 }
