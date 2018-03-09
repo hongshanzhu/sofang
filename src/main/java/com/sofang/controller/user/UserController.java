@@ -21,7 +21,7 @@ public class UserController {
         return "user/login";
     }
 
-    @GetMapping("user/center")
+    @GetMapping("/user/center")
     public String centerPage(){
         return "user/center";
     }

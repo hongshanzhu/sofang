@@ -1,6 +1,7 @@
 package com.sofang.config;
 
 import com.sofang.security.AuthProvider;
+import com.sofang.security.LoginUrlEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,7 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
 
 /**
  * 权限配置
@@ -44,7 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/logout/page")
                 .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true).and();
+                .invalidateHttpSession(true).and()
+                 .exceptionHandling().authenticationEntryPoint(urlEntryPoint())
+                 .accessDeniedPage("/403");
+
 
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
@@ -58,6 +61,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthProvider authProvider(){
         return new AuthProvider();
+    }
+
+    @Bean
+    public LoginUrlEntryPoint urlEntryPoint(){
+        return new LoginUrlEntryPoint("/user/login");
     }
 
 }
