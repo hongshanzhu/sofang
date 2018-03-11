@@ -1,4 +1,4 @@
-package com.sofang.controller.user;
+package com.sofang.web.controller.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

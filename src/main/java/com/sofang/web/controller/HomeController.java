@@ -1,4 +1,4 @@
-package com.sofang.controller;
+package com.sofang.web.controller;
 
 import com.sofang.base.ResponseEntity;
 import org.springframework.stereotype.Controller;

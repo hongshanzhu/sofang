@@ -64,6 +64,10 @@ public class ResponseEntity<T> {
         return new ResponseEntity<>(errorCode, msg);
     }
 
+    public static <T> ResponseEntity<T> createByErrorCodeMessage(StatusCode code){
+        return new ResponseEntity<>(code.getCode(), code.getMessage());
+    }
+
     public Integer getCode() {
         return code;
     }
