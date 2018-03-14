@@ -16,7 +16,8 @@ public enum StatusCode {
     INTERNAL_SERVER_ERROR(500, "UnKnown Internal Error"),
     NOT_VALID_PARAM(-1, "Not Valid Params"),
     NOT_SUPPORTED_OPERATION(-2, "Operation not Supported"),
-    NOT_LOGIN(403, "Not Login");
+    NOT_LOGIN(403, "Not Login"),
+    NOT_FOUND(404, "Not Found");
 
     private Integer code;
 

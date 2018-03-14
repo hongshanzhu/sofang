@@ -1,8 +1,7 @@
 package com.sofang.config;
 
-import org.hibernate.resource.jdbc.ResourceRegistry;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -75,5 +74,14 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(this.templateEngine());
         return viewResolver;
+    }
+
+    /**
+     * Bean Util
+     * @return
+     */
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
     }
 }

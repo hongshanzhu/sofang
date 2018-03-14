@@ -25,5 +25,12 @@ public interface AddressService {
      * @return
      */
     Map<Level, SupportAddressDTO> findCityAndRegion(String cityEnName, String regionEnName);
+
+    /**
+     * 获取城市下的所有区/县
+     * @param cityEnName
+     * @return
+     */
+    ServiceMultiResult<SupportAddressDTO> findAllRegionByCityName(String cityEnName);
 }
 
