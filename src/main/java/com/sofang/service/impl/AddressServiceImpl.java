@@ -4,9 +4,12 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.sofang.base.Level;
 import com.sofang.base.ServiceMultiResult;
+import com.sofang.entity.Subway;
 import com.sofang.entity.SupportAddress;
+import com.sofang.repository.SubwayRepository;
 import com.sofang.repository.SupportAddressRepository;
 import com.sofang.service.AddressService;
+import com.sofang.web.dto.SubwayDTO;
 import com.sofang.web.dto.SupportAddressDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Autowired
     private SupportAddressRepository supportAddressRepository;
+
+    @Autowired
+    private SubwayRepository subwayRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -46,6 +52,14 @@ public class AddressServiceImpl implements AddressService {
             result.add(modelMapper.map(region, SupportAddressDTO.class));
         });
         return new ServiceMultiResult<>(regions.size(), result);
+    }
+
+    @Override
+    public List<SubwayDTO> findAllSubwayByCity(String cityEnName) {
+        List<SubwayDTO> result = Lists.newArrayList();
+        List<Subway> subways = subwayRepository.findAllByCityEnName(cityEnName);
+        subways.forEach(subway -> result.add(modelMapper.map(subway, SubwayDTO.class)));
+        return result;
     }
 
     @Override

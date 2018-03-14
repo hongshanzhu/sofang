@@ -4,6 +4,7 @@ import com.sofang.base.ResponseEntity;
 import com.sofang.base.ServiceMultiResult;
 import com.sofang.base.StatusCode;
 import com.sofang.service.AddressService;
+import com.sofang.web.dto.SubwayDTO;
 import com.sofang.web.dto.SupportAddressDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created by gegf
@@ -48,6 +51,18 @@ public class HouseController {
             return ResponseEntity.createByErrorCodeMessage(StatusCode.NOT_FOUND);
         }
         return ResponseEntity.createBySuccess(addressResult.getResult());
+    }
+
+    /**
+     * 获取具体城市所支持的地铁线路
+     * @param cityEnName
+     * @return
+     */
+    @GetMapping("address/support/subway/line")
+    @ResponseBody
+    public ResponseEntity getSupportSubwayLine(@RequestParam(name = "city_name") String cityEnName) {
+        List<SubwayDTO> subways = addressService.findAllSubwayByCity(cityEnName);
+        return ResponseEntity.createBySuccess(subways);
     }
 
 

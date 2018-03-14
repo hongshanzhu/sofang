@@ -1,10 +1,12 @@
 package com.sofang.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.sofang.base.Level;
 
 import com.sofang.base.ServiceMultiResult;
+import com.sofang.web.dto.SubwayDTO;
 import com.sofang.web.dto.SupportAddressDTO;
 
 /**
@@ -32,5 +34,12 @@ public interface AddressService {
      * @return
      */
     ServiceMultiResult<SupportAddressDTO> findAllRegionByCityName(String cityEnName);
+
+    /**
+     * 获取城市下的地铁线路
+     * @param cityEnName
+     * @return
+     */
+    List<SubwayDTO> findAllSubwayByCity(String cityEnName);
 }
 
