@@ -7,6 +7,7 @@ import com.sofang.base.Level;
 
 import com.sofang.base.ServiceMultiResult;
 import com.sofang.web.dto.SubwayDTO;
+import com.sofang.web.dto.SubwayStationDTO;
 import com.sofang.web.dto.SupportAddressDTO;
 
 /**
@@ -41,5 +42,12 @@ public interface AddressService {
      * @return
      */
     List<SubwayDTO> findAllSubwayByCity(String cityEnName);
+
+    /**
+     * 获取对应地铁线路所支持的地铁站点
+     * @param subwayId
+     * @return
+     */
+    List<SubwayStationDTO> findAllStationBySubway(Long subwayId);
 }
 

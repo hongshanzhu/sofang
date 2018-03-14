@@ -5,11 +5,14 @@ import com.google.common.collect.Lists;
 import com.sofang.base.Level;
 import com.sofang.base.ServiceMultiResult;
 import com.sofang.entity.Subway;
+import com.sofang.entity.SubwayStation;
 import com.sofang.entity.SupportAddress;
 import com.sofang.repository.SubwayRepository;
+import com.sofang.repository.SubwayStationRepository;
 import com.sofang.repository.SupportAddressRepository;
 import com.sofang.service.AddressService;
 import com.sofang.web.dto.SubwayDTO;
+import com.sofang.web.dto.SubwayStationDTO;
 import com.sofang.web.dto.SupportAddressDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Autowired
     private SubwayRepository subwayRepository;
+
+    @Autowired
+    private SubwayStationRepository subwayStationRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -59,6 +65,18 @@ public class AddressServiceImpl implements AddressService {
         List<SubwayDTO> result = Lists.newArrayList();
         List<Subway> subways = subwayRepository.findAllByCityEnName(cityEnName);
         subways.forEach(subway -> result.add(modelMapper.map(subway, SubwayDTO.class)));
+        return result;
+    }
+
+    @Override
+    public List<SubwayStationDTO> findAllStationBySubway(Long subwayId) {
+        List<SubwayStationDTO> result = Lists.newArrayList();
+        List<SubwayStation> stations = subwayStationRepository.findAllBySubwayId(subwayId);
+        if (stations.isEmpty()) {
+            return result;
+        }
+
+        stations.forEach(station -> result.add(modelMapper.map(station, SubwayStationDTO.class)));
         return result;
     }
 

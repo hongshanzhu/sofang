@@ -5,6 +5,7 @@ import com.sofang.base.ServiceMultiResult;
 import com.sofang.base.StatusCode;
 import com.sofang.service.AddressService;
 import com.sofang.web.dto.SubwayDTO;
+import com.sofang.web.dto.SubwayStationDTO;
 import com.sofang.web.dto.SupportAddressDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,5 +66,20 @@ public class HouseController {
         return ResponseEntity.createBySuccess(subways);
     }
 
+    /**
+     * 获取对应地铁线路所支持的地铁站点
+     * @param subwayId
+     * @return
+     */
+    @GetMapping("address/support/subway/station")
+    @ResponseBody
+    public ResponseEntity getSupportSubwayStation(@RequestParam(name = "subway_id") Long subwayId) {
+        List<SubwayStationDTO> stationDTOS = addressService.findAllStationBySubway(subwayId);
+        if (stationDTOS.isEmpty()) {
+            return ResponseEntity.createByErrorCodeMessage(StatusCode.NOT_FOUND);
+        }
+
+        return ResponseEntity.createBySuccess(stationDTOS);
+    }
 
 }
