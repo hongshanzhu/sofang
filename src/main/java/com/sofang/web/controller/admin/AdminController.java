@@ -3,21 +3,26 @@ package com.sofang.web.controller.admin;
 import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
-import com.sofang.base.ResponseEntity;
-import com.sofang.base.StatusCode;
+import com.sofang.base.*;
+import com.sofang.service.AddressService;
+import com.sofang.service.HouseService;
 import com.sofang.service.QiNiuService;
+import com.sofang.web.dto.HouseDTO;
+import com.sofang.web.dto.SupportAddressDTO;
+import com.sofang.web.form.HouseForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.sofang.web.dto.QiNiuPutRet;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * 后台管理
@@ -35,6 +40,12 @@ public class AdminController {
 
     @Autowired
     private Gson gson;
+
+    @Autowired
+    private AddressService addressService;
+
+    @Autowired
+    private HouseService houseService;
 
     @GetMapping("/admin/center")
     public String adminCenterPage(){
@@ -67,9 +78,6 @@ public class AdminController {
         if (file.isEmpty()) {
             return ResponseEntity.createByErrorCodeMessage(StatusCode.NOT_VALID_PARAM);
         }
-
-        String fileName = file.getOriginalFilename();
-
         try {
             InputStream inputStream = file.getInputStream();
             Response response = qiNiuService.uploadFile(inputStream);
@@ -92,4 +100,29 @@ public class AdminController {
             return ResponseEntity.createByErrorCodeMessage(StatusCode.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @ResponseBody
+    @PostMapping("admin/add/house")
+    public ResponseEntity addHouse(@Valid @ModelAttribute("form-house-add") HouseForm houseForm,
+                                   BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST.value(),
+                    bindingResult.getAllErrors().get(0).getDefaultMessage(), null);
+        }
+        if(houseForm.getPhotos() == null || houseForm.getCover() == null){
+            return ResponseEntity.createByErrorCodeMessage(HttpStatus.BAD_REQUEST.value(), "图片必须上传");
+        }
+        Map<Level, SupportAddressDTO> map = addressService.findCityAndRegion(houseForm.getCityEnName(), houseForm.getRegionEnName());
+        if(map.keySet().size() != 2){
+            return ResponseEntity.createByErrorCodeMessage(StatusCode.NOT_VALID_PARAM);
+        }
+        ServiceResult<HouseDTO> result = houseService.save(houseForm);
+        if(result.isSuccess()){
+           return ResponseEntity.createBySuccess(result.getResult());
+        }else{
+            return ResponseEntity.createByErrorCodeMessage(StatusCode.NOT_VALID_PARAM);
+        }
+
+    }
+
 }
