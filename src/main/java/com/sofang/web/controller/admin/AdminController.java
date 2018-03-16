@@ -83,7 +83,7 @@ public class AdminController {
             Response response = qiNiuService.uploadFile(inputStream);
             if (response.isOK()) {
                 QiNiuPutRet ret = gson.fromJson(response.bodyString(), QiNiuPutRet.class);
-                return ResponseEntity.createBySuccessMessage("success");
+                return ResponseEntity.ofSuccess(ret);
             } else {
                 return ResponseEntity.createByErrorCodeMessage(StatusCode.INTERNAL_SERVER_ERROR);
             }

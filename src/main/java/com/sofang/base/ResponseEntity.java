@@ -60,6 +60,10 @@ public class ResponseEntity<T> {
         return new ResponseEntity<>(StatusCode.SUCCESS.getCode(), data);
     }
 
+    public static <T> ResponseEntity<T> ofSuccess(Object object){
+        return new ResponseEntity(StatusCode.SUCCESS.getCode(), object);
+    }
+
     public static <T> ResponseEntity<T> createByErrorCodeMessage(int errorCode, String msg){
         return new ResponseEntity<>(errorCode, msg);
     }

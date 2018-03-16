@@ -2,7 +2,6 @@ package com.sofang.base;
 
 import com.sofang.entity.User;
 import org.springframework.security.core.context.SecurityContextHolder;
-import sun.plugin.liveconnect.SecurityContextHelper;
 
 public class LoginUserUtil {
 
