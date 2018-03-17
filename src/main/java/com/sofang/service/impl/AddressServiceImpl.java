@@ -2,6 +2,7 @@ package com.sofang.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.sofang.base.Level;
 import com.sofang.base.ServiceMultiResult;
 import com.sofang.entity.Subway;
@@ -82,6 +83,14 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Map<Level, SupportAddressDTO> findCityAndRegion(String cityEnName, String regionEnName) {
-        return null;
+        Map<Level, SupportAddressDTO> result = Maps.newHashMap();
+
+        SupportAddress city = supportAddressRepository.findByEnNameAndLevel(cityEnName, Level.CITY
+                .getValue());
+        SupportAddress region = supportAddressRepository.findByEnNameAndBelongTo(regionEnName, city.getEnName());
+
+        result.put(Level.CITY, modelMapper.map(city, SupportAddressDTO.class));
+        result.put(Level.REGION, modelMapper.map(region, SupportAddressDTO.class));
+        return result;
     }
 }
