@@ -1,7 +1,9 @@
 package com.sofang.service;
 
+import com.sofang.base.ServiceMultiResult;
 import com.sofang.base.ServiceResult;
 import com.sofang.web.dto.HouseDTO;
+import com.sofang.web.form.DataTableSearch;
 import com.sofang.web.form.HouseForm;
 
 /**
@@ -11,5 +13,12 @@ import com.sofang.web.form.HouseForm;
 public interface HouseService {
 
     ServiceResult<HouseDTO> save(HouseForm houseForm);
+
+    /**
+     * 管理员查询房源列表
+     * @param search
+     * @return
+     */
+    ServiceMultiResult<HouseDTO> adminQuery(DataTableSearch search);
 
 }

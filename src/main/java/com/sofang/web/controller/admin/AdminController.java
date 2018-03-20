@@ -9,6 +9,7 @@ import com.sofang.service.HouseService;
 import com.sofang.service.QiNiuService;
 import com.sofang.web.dto.HouseDTO;
 import com.sofang.web.dto.SupportAddressDTO;
+import com.sofang.web.form.DataTableSearch;
 import com.sofang.web.form.HouseForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,6 +67,25 @@ public class AdminController {
     public String addHousePage(){
         return "admin/house-add";
     }
+
+    /**
+     * 房源列表页
+     * @return
+     */
+    @GetMapping("admin/house/list")
+    public String houseListPage() {
+        return "admin/house-list";
+    }
+
+    @ResponseBody
+    @PostMapping("admin/house")
+    public DataTablesResponse houses(@ModelAttribute DataTableSearch search){
+
+        return null;
+    }
+
+
+
 
     /**
      * 上传图片接口

@@ -2,6 +2,7 @@ package com.sofang.service.impl;
 
 import com.google.common.collect.Lists;
 import com.sofang.base.LoginUserUtil;
+import com.sofang.base.ServiceMultiResult;
 import com.sofang.base.ServiceResult;
 import com.sofang.entity.*;
 import com.sofang.repository.*;
@@ -9,6 +10,7 @@ import com.sofang.service.HouseService;
 import com.sofang.web.dto.HouseDTO;
 import com.sofang.web.dto.HouseDetailDTO;
 import com.sofang.web.dto.HousePictureDTO;
+import com.sofang.web.form.DataTableSearch;
 import com.sofang.web.form.HouseForm;
 import com.sofang.web.form.PhotoForm;
 import org.modelmapper.ModelMapper;
@@ -140,6 +142,11 @@ public class HouseServiceImpl implements HouseService {
         houseDetail.setRentWay(houseForm.getRentWay());
         houseDetail.setRoundService(houseForm.getRoundService());
         houseDetail.setTraffic(houseForm.getTraffic());
+        return null;
+    }
+
+    @Override
+    public ServiceMultiResult<HouseDTO> adminQuery(DataTableSearch search) {
         return null;
     }
 }
