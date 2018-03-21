@@ -147,6 +147,14 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public ServiceMultiResult<HouseDTO> adminQuery(DataTableSearch search) {
-        return null;
+        List<HouseDTO> houseDTOS = Lists.newArrayList();
+        Iterable<House> houses = houseRepository.findAll();
+        houses.forEach(house -> {
+            HouseDTO houseDTO = modelMapper.map(house, HouseDTO.class);
+            houseDTO.setCover(this.cdnPrefix + house.getCover());
+            houseDTOS.add(houseDTO);
+        });
+
+        return new ServiceMultiResult<>(houseDTOS.size(), houseDTOS);
     }
 }
