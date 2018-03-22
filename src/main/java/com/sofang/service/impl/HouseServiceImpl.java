@@ -16,6 +16,10 @@ import com.sofang.web.form.PhotoForm;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -148,13 +152,19 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public ServiceMultiResult<HouseDTO> adminQuery(DataTableSearch search) {
         List<HouseDTO> houseDTOS = Lists.newArrayList();
-        Iterable<House> houses = houseRepository.findAll();
+
+        Sort sort = new Sort(Sort.Direction.fromString(search.getDirection()), search.getOrderBy());
+        int page = search.getStart() / search.getLength(); //第几页
+        Pageable pageable = new PageRequest(page, search.getLength(), sort);
+
+        Page<House> houses = houseRepository.findAll(pageable);
+
         houses.forEach(house -> {
             HouseDTO houseDTO = modelMapper.map(house, HouseDTO.class);
             houseDTO.setCover(this.cdnPrefix + house.getCover());
             houseDTOS.add(houseDTO);
         });
 
-        return new ServiceMultiResult<>(houseDTOS.size(), houseDTOS);
+        return new ServiceMultiResult<>(houses.getTotalElements(), houseDTOS);
     }
 }
