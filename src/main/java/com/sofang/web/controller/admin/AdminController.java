@@ -78,10 +78,15 @@ public class AdminController {
     }
 
     @ResponseBody
-    @PostMapping("admin/house")
+    @PostMapping("admin/houses")
     public DataTablesResponse houses(@ModelAttribute DataTableSearch search){
-
-        return null;
+        ServiceMultiResult<HouseDTO> result = houseService.adminQuery(search);
+        DataTablesResponse dataTablesResponse = new DataTablesResponse(StatusCode.SUCCESS.getCode());
+        dataTablesResponse.setData(result.getResult());
+        dataTablesResponse.setRecordsFiltered(result.getTotal());
+        dataTablesResponse.setRecordsTotal(result.getTotal());
+        dataTablesResponse.setDraw(search.getDraw());
+        return dataTablesResponse;
     }
 
 

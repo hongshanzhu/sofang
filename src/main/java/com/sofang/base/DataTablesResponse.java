@@ -14,6 +14,10 @@ public class DataTablesResponse extends ResponseEntity {
     //分页
     private long recordsFiltered;
 
+    public DataTablesResponse(Integer code) {
+        super(code);
+    }
+
     public DataTablesResponse(Integer code, String message, Object data) {
         super(code, message, data);
     }
