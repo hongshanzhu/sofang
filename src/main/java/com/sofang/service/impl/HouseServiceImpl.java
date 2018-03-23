@@ -1,6 +1,7 @@
 package com.sofang.service.impl;
 
 import com.google.common.collect.Lists;
+import com.sofang.base.HouseStatus;
 import com.sofang.base.LoginUserUtil;
 import com.sofang.base.ServiceMultiResult;
 import com.sofang.base.ServiceResult;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -157,7 +159,30 @@ public class HouseServiceImpl implements HouseService {
         int page = search.getStart() / search.getLength(); //第几页
         Pageable pageable = new PageRequest(page, search.getLength(), sort);
 
-        Page<House> houses = houseRepository.findAll(pageable);
+        Specification<House> specification = (root, query, cb)->{
+            //基础条件 账户为admin 房源状态不是删除
+             javax.persistence.criteria.Predicate predicate = cb.equal(root.get("adminId"), LoginUserUtil.getLoginUser());
+             predicate = cb.and(predicate, cb.notEqual(root.get("status"), HouseStatus.DELETED.getValue()));
+
+             if(search.getCity() != null){
+                 predicate = cb.and(predicate, cb.equal(root.get("cityEnName"), search.getCity()));
+             }
+             if(search.getStatus() != null){
+                 predicate = cb.and(predicate, cb.equal(root.get("status"), search.getStatus()));
+             }
+             if(search.getCreateTimeMin() != null){
+                 predicate = cb.and(predicate, cb.greaterThanOrEqualTo(root.get("createTime"), search.getCreateTimeMin()));
+             }
+             if (search.getCreateTimeMax() != null){
+                 predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("createTime"), search.getCreateTimeMax()));
+             }
+             if(search.getTitle() != null){
+                 predicate = cb.and(predicate, cb.like(root.get("title"), "%"+search.getTitle()+"%"));
+             }
+             return predicate;
+        };
+
+        Page<House> houses = houseRepository.findAll(specification, pageable);
 
         houses.forEach(house -> {
             HouseDTO houseDTO = modelMapper.map(house, HouseDTO.class);
