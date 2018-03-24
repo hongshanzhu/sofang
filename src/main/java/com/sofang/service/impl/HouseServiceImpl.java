@@ -192,4 +192,32 @@ public class HouseServiceImpl implements HouseService {
 
         return new ServiceMultiResult<>(houses.getTotalElements(), houseDTOS);
     }
+
+    @Override
+    public ServiceResult<HouseDTO> findCompleteOne(Long id) {
+        House house = houseRepository.findOne(id);
+        if(house == null){
+            return ServiceResult.notFound();
+        }
+
+        HouseDetail detail = houseDetailRepository.findByHouseId(id);
+        List<HousePicture> pictures = housePictureRepository.findAllByHouseId(id);
+
+        HouseDetailDTO detailDTO = modelMapper.map(detail, HouseDetailDTO.class );
+        List<HousePictureDTO> pictureDTOS = Lists.newArrayList();
+        pictures.forEach(p -> {
+            pictureDTOS.add(modelMapper.map(p, HousePictureDTO.class));
+        });
+
+        List<HouseTag> tags = houseTagRepository.findAllByHouseId(id);
+        List<String> tagList = Lists.newArrayList();
+        tags.forEach(tag -> tagList.add(tag.getName()));
+
+        HouseDTO result = modelMapper.map(house, HouseDTO.class);
+        result.setHouseDetail(detailDTO);
+        result.setPictures(pictureDTOS);
+        result.setTags(tagList);
+
+        return ServiceResult.of(result);
+    }
 }

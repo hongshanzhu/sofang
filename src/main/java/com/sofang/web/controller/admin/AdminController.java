@@ -7,18 +7,17 @@ import com.sofang.base.*;
 import com.sofang.service.AddressService;
 import com.sofang.service.HouseService;
 import com.sofang.service.QiNiuService;
-import com.sofang.web.dto.HouseDTO;
-import com.sofang.web.dto.SupportAddressDTO;
+import com.sofang.web.dto.*;
 import com.sofang.web.form.DataTableSearch;
 import com.sofang.web.form.HouseForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.sofang.web.dto.QiNiuPutRet;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -148,6 +147,36 @@ public class AdminController {
             return ResponseEntity.createByErrorCodeMessage(StatusCode.NOT_VALID_PARAM);
         }
 
+    }
+
+    @GetMapping("admin/house/edit")
+    public String houseEditPage(@RequestParam(value = "id") Long id, Model model){
+        if(id ==null || id < 1){
+            return "404";
+        }
+
+        ServiceResult<HouseDTO> serviceResult = houseService.findCompleteOne(id);
+        if(!serviceResult.isSuccess()){
+            return "404";
+        }
+
+        HouseDTO result = serviceResult.getResult();
+        model.addAttribute("house", result);
+
+        Map<Level, SupportAddressDTO> addressDTOMap = addressService.findCityAndRegion(result.getCityEnName(), result.getRegionEnName());
+        model.addAttribute("city", addressDTOMap.get(Level.CITY));
+        model.addAttribute("region", addressDTOMap.get(Level.REGION));
+
+        HouseDetailDTO detailDTO = result.getHouseDetail();
+        ServiceResult<SubwayDTO> subwayDTOServiceResult = addressService.findSubway(id);
+        if(subwayDTOServiceResult.isSuccess()){
+            model.addAttribute("subway", subwayDTOServiceResult.getResult());
+        }
+        ServiceResult<SubwayStationDTO> subwayStationDTOServiceResult = addressService.findSubwayStation(detailDTO.getSubwayStationId());
+        if(subwayStationDTOServiceResult.isSuccess()){
+            model.addAttribute("station", subwayStationDTOServiceResult.getResult());
+        }
+        return "admin/house-edit";
     }
 
 }

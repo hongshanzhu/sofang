@@ -6,6 +6,7 @@ import java.util.Map;
 import com.sofang.base.Level;
 
 import com.sofang.base.ServiceMultiResult;
+import com.sofang.base.ServiceResult;
 import com.sofang.web.dto.SubwayDTO;
 import com.sofang.web.dto.SubwayStationDTO;
 import com.sofang.web.dto.SupportAddressDTO;
@@ -49,5 +50,9 @@ public interface AddressService {
      * @return
      */
     List<SubwayStationDTO> findAllStationBySubway(Long subwayId);
+
+    public ServiceResult<SubwayDTO> findSubway(Long subwayId);
+
+    ServiceResult<SubwayStationDTO> findSubwayStation(Long subwayStationId);
 }
 

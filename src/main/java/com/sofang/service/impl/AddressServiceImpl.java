@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sofang.base.Level;
 import com.sofang.base.ServiceMultiResult;
+import com.sofang.base.ServiceResult;
 import com.sofang.entity.Subway;
 import com.sofang.entity.SubwayStation;
 import com.sofang.entity.SupportAddress;
@@ -92,5 +93,29 @@ public class AddressServiceImpl implements AddressService {
         result.put(Level.CITY, modelMapper.map(city, SupportAddressDTO.class));
         result.put(Level.REGION, modelMapper.map(region, SupportAddressDTO.class));
         return result;
+    }
+
+    @Override
+    public ServiceResult<SubwayDTO> findSubway(Long subwayId) {
+        if (subwayId == null) {
+            return ServiceResult.notFound();
+        }
+        Subway subway = subwayRepository.findOne(subwayId);
+        if (subway == null) {
+            return ServiceResult.notFound();
+        }
+        return ServiceResult.of(modelMapper.map(subway, SubwayDTO.class));
+    }
+
+    @Override
+    public ServiceResult<SubwayStationDTO> findSubwayStation(Long stationId) {
+        if (stationId == null) {
+            return ServiceResult.notFound();
+        }
+        SubwayStation station = subwayStationRepository.findOne(stationId);
+        if (station == null) {
+            return ServiceResult.notFound();
+        }
+        return ServiceResult.of(modelMapper.map(station, SubwayStationDTO.class));
     }
 }
