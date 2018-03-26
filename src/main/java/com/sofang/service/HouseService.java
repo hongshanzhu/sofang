@@ -5,6 +5,7 @@ import com.sofang.base.ServiceResult;
 import com.sofang.web.dto.HouseDTO;
 import com.sofang.web.form.DataTableSearch;
 import com.sofang.web.form.HouseForm;
+import com.sofang.web.form.RentFilter;
 
 /**
  * 房源管理接口
@@ -27,5 +28,12 @@ public interface HouseService {
      * @return
      */
     ServiceResult<HouseDTO> findCompleteOne(Long id);
+
+    /**
+     * 查询房源信息集
+     * @param rentFilter
+     * @return
+     */
+    ServiceMultiResult<HouseDTO> query(RentFilter rentFilter);
 
 }

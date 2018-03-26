@@ -13,9 +13,11 @@ import com.sofang.repository.SubwayRepository;
 import com.sofang.repository.SubwayStationRepository;
 import com.sofang.repository.SupportAddressRepository;
 import com.sofang.service.AddressService;
+import com.sofang.web.dto.HouseDTO;
 import com.sofang.web.dto.SubwayDTO;
 import com.sofang.web.dto.SubwayStationDTO;
 import com.sofang.web.dto.SupportAddressDTO;
+import com.sofang.web.form.RentFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -118,4 +120,36 @@ public class AddressServiceImpl implements AddressService {
         }
         return ServiceResult.of(modelMapper.map(station, SubwayStationDTO.class));
     }
+
+    @Override
+    public ServiceResult<SupportAddressDTO> findCity(String cityEnName) {
+        if (cityEnName == null) {
+            return ServiceResult.notFound();
+        }
+
+        SupportAddress supportAddress = supportAddressRepository.findByEnNameAndLevel(cityEnName, Level.CITY.getValue());
+        if (supportAddress == null) {
+            return ServiceResult.notFound();
+        }
+
+        SupportAddressDTO addressDTO = modelMapper.map(supportAddress, SupportAddressDTO.class);
+        return ServiceResult.of(addressDTO);
+    }
+
+    @Override
+    public ServiceMultiResult<SupportAddressDTO> findAllRegionsByCityName(String cityName) {
+        if (cityName == null) {
+            return new ServiceMultiResult<>(0, null);
+        }
+
+        List<SupportAddressDTO> result = Lists.newArrayList();
+
+        List<SupportAddress> regions = supportAddressRepository.findAllByLevelAndBelongTo(Level.REGION
+                .getValue(), cityName);
+        for (SupportAddress region : regions) {
+            result.add(modelMapper.map(region, SupportAddressDTO.class));
+        }
+        return new ServiceMultiResult<>(regions.size(), result);
+    }
+
 }

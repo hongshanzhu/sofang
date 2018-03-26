@@ -7,9 +7,11 @@ import com.sofang.base.Level;
 
 import com.sofang.base.ServiceMultiResult;
 import com.sofang.base.ServiceResult;
+import com.sofang.web.dto.HouseDTO;
 import com.sofang.web.dto.SubwayDTO;
 import com.sofang.web.dto.SubwayStationDTO;
 import com.sofang.web.dto.SupportAddressDTO;
+import com.sofang.web.form.RentFilter;
 
 /**
  * 地址服务接口
@@ -54,5 +56,10 @@ public interface AddressService {
     public ServiceResult<SubwayDTO> findSubway(Long subwayId);
 
     ServiceResult<SubwayStationDTO> findSubwayStation(Long subwayStationId);
+
+    ServiceResult<SupportAddressDTO> findCity(String cityEnName);
+
+    ServiceMultiResult<SupportAddressDTO> findAllRegionsByCityName(String cityEnName);
+
 }
 

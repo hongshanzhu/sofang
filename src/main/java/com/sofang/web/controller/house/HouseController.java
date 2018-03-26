@@ -1,19 +1,20 @@
 package com.sofang.web.controller.house;
 
-import com.sofang.base.ResponseEntity;
-import com.sofang.base.ServiceMultiResult;
-import com.sofang.base.StatusCode;
+import com.sofang.base.*;
 import com.sofang.service.AddressService;
+import com.sofang.service.HouseService;
+import com.sofang.web.dto.HouseDTO;
 import com.sofang.web.dto.SubwayDTO;
 import com.sofang.web.dto.SubwayStationDTO;
 import com.sofang.web.dto.SupportAddressDTO;
+import com.sofang.web.form.RentFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -24,6 +25,9 @@ public class HouseController {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private HouseService houseService;
 
     /**
      * 获取所有支持的城市
@@ -80,6 +84,56 @@ public class HouseController {
         }
 
         return ResponseEntity.createBySuccess(stationDTOS);
+    }
+
+    @GetMapping("rent/house")
+    public String rentHousePage(@ModelAttribute RentFilter rentFilter,
+                                Model model, HttpSession session,
+                                RedirectAttributes redirectAttributes) {
+        if (rentFilter.getCityEnName() == null) {
+            String cityEnNameInSession = (String) session.getAttribute("cityEnName");
+            if (cityEnNameInSession == null) {
+                redirectAttributes.addAttribute("msg", "must_chose_city");
+                return "redirect:/index";
+            } else {
+                rentFilter.setCityEnName(cityEnNameInSession);
+            }
+        } else {
+            session.setAttribute("cityEnName", rentFilter.getCityEnName());
+        }
+
+        ServiceResult<SupportAddressDTO> city = addressService.findCity(rentFilter.getCityEnName());
+        if (!city.isSuccess()) {
+            redirectAttributes.addAttribute("msg", "must_chose_city");
+            return "redirect:/index";
+        }
+        model.addAttribute("currentCity", city.getResult());
+
+        ServiceMultiResult<SupportAddressDTO> addressResult = addressService.findAllRegionsByCityName(rentFilter.getCityEnName());
+        if (addressResult.getResult() == null || addressResult.getTotal() < 1) {
+            redirectAttributes.addAttribute("msg", "must_chose_city");
+            return "redirect:/index";
+        }
+
+        ServiceMultiResult<HouseDTO> serviceMultiResult = houseService.query(rentFilter);
+
+        model.addAttribute("total", serviceMultiResult.getTotal());
+        model.addAttribute("houses", serviceMultiResult.getResult());
+
+        if (rentFilter.getRegionEnName() == null) {
+            rentFilter.setRegionEnName("*");
+        }
+
+        model.addAttribute("searchBody", rentFilter);
+        model.addAttribute("regions", addressResult.getResult());
+
+        model.addAttribute("priceBlocks", RentValueBlock.PRICE_BLOCK);
+        model.addAttribute("areaBlocks", RentValueBlock.AREA_BLOCK);
+
+        model.addAttribute("currentPriceBlock", RentValueBlock.matchPrice(rentFilter.getPriceBlock()));
+        model.addAttribute("currentAreaBlock", RentValueBlock.matchArea(rentFilter.getAreaBlock()));
+
+        return "rent-list";
     }
 
 }
