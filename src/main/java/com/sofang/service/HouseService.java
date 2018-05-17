@@ -36,4 +36,20 @@ public interface HouseService {
      */
     ServiceMultiResult<HouseDTO> query(RentFilter rentFilter);
 
+    /**
+     * 修改房源信息
+     * @param houseForm
+     * @return
+     */
+    ServiceResult update(HouseForm houseForm);
+
+    ServiceResult removePhoto(Long id);
+
+    ServiceResult updateCover(Long coverId, Long targetId);
+
+    ServiceResult removeTag(Long houseId, String tag);
+
+    ServiceResult updateStatus(Long id, int value);
+
+    ServiceResult addTag(Long houseId, String tag);
 }
