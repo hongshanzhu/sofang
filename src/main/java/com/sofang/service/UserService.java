@@ -12,5 +12,5 @@ public interface UserService {
 
     User findUserByName(String username);
 
-    ServiceResult<UserDTO> findById(Long adminId);
+    ServiceResult<UserDTO> findById(Long useId);
 }
