@@ -167,7 +167,7 @@ public class AdminController {
         model.addAttribute("region", addressDTOMap.get(Level.REGION));
 
         HouseDetailDTO detailDTO = result.getHouseDetail();
-        ServiceResult<SubwayDTO> subwayDTOServiceResult = addressService.findSubway(id);
+        ServiceResult<SubwayDTO> subwayDTOServiceResult = addressService.findSubway(detailDTO.getSubwayLineId());
         if(subwayDTOServiceResult.isSuccess()){
             model.addAttribute("subway", subwayDTOServiceResult.getResult());
         }
