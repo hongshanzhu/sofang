@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
  * Elasticsearch configuration
  * Created by gegf.
  */
-@Configuration
 public class ElasticSearchConfig {
     @Value("${elasticsearch.host}")
     private String esHost;
