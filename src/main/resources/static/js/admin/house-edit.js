@@ -1,39 +1,36 @@
-/**
- * Created by 瓦力.
- */
 $(function () {
     var $city = $("#city"),
         $region = $("#region"),
         $subwayLine = $("#subwayLine"),
         $subwayStation = $("#subwayStation");
 
-    // $city.on('change', function () {
-    //     changeCity($city);
-    // });
+      $city.on('change', function () {
+          changeCity($city);
+     });
 
     var selectedVal = $city.val();
     changeRegion($region, selectedVal);
 
     // 二级联动 地区绑定
     $city.change(function () {
-        // var selectedVal = $(this).val();
-        // if (typeof(selectedVal) == 'undefined' || selectedVal == "") {
-        //     layer.msg('请选择所在城市！', {icon: 5, time: 2000});
-        //     return;
-        // }
+          var selectedVal = $(this).val();
+          if (typeof(selectedVal) == 'undefined' || selectedVal == "") {
+              layer.msg('请选择所在城市！', {icon: 5, time: 2000});
+              return;
+          }
 
         changeRegion($region, selectedVal);
         changeSubwayLine($subwayLine, selectedVal);
     });
 
-    // $subwayLine.on('click', function () {
-    //     var city = $city.val();
-    //     if (typeof(city) === 'undefined' || city === "") {
-    //         layer.msg('请选择所在城市！', {icon: 5, time: 2000});
-    //         return;
-    //     }
-    //     changeSubwayLine($subwayLine, $city.val());
-    // });
+      $subwayLine.on('click', function () {
+          var city = $city.val();
+          if (typeof(city) === 'undefined' || city === "") {
+             layer.msg('请选择所在城市！', {icon: 5, time: 2000});
+              return;
+          }
+         changeSubwayLine($subwayLine, $city.val());
+      });
 
     $subwayLine.change(function () {
         var selectedVal = $(this).val();
@@ -173,9 +170,9 @@ $(function () {
             city: '必须指定城市',
             region: '必须指定地区'
         },
-        // errorPlacement: function (error, element) { //错误信息位置设置方法
-        //     error.appendTo(element); //这里的element是录入数据的对象
-        // },
+          errorPlacement: function (error, element) { //错误信息位置设置方法
+             error.appendTo(element); //这里的element是录入数据的对象
+          },
         onkeyup: false,
         focusCleanup: true,
         success: "valid",
