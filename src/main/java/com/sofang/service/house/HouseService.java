@@ -1,4 +1,4 @@
-package com.sofang.service;
+package com.sofang.service.house;
 
 import com.sofang.base.ServiceMultiResult;
 import com.sofang.base.ServiceResult;

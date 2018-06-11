@@ -1,11 +1,11 @@
-package com.sofang.service.impl;
+package com.sofang.service.user;
 
 import com.sofang.base.ServiceResult;
 import com.sofang.entity.Role;
 import com.sofang.entity.User;
 import com.sofang.repository.RoleRepository;
 import com.sofang.repository.UserRepository;
-import com.sofang.service.UserService;
+import com.sofang.service.user.UserService;
 import com.sofang.web.dto.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

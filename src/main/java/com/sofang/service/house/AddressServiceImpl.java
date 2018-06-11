@@ -1,4 +1,4 @@
-package com.sofang.service.impl;
+package com.sofang.service.house;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -12,12 +12,10 @@ import com.sofang.entity.SupportAddress;
 import com.sofang.repository.SubwayRepository;
 import com.sofang.repository.SubwayStationRepository;
 import com.sofang.repository.SupportAddressRepository;
-import com.sofang.service.AddressService;
-import com.sofang.web.dto.HouseDTO;
+import com.sofang.service.house.AddressService;
 import com.sofang.web.dto.SubwayDTO;
 import com.sofang.web.dto.SubwayStationDTO;
 import com.sofang.web.dto.SupportAddressDTO;
-import com.sofang.web.form.RentFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.sofang.service.impl;
+package com.sofang.service.house;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -8,8 +8,8 @@ import com.sofang.base.*;
 import com.sofang.entity.*;
 import com.sofang.repository.*;
 import com.sofang.service.ElasticsearchService;
-import com.sofang.service.HouseService;
-import com.sofang.service.QiNiuService;
+import com.sofang.service.house.HouseService;
+import com.sofang.service.house.QiNiuService;
 import com.sofang.web.dto.HouseDTO;
 import com.sofang.web.dto.HouseDetailDTO;
 import com.sofang.web.dto.HousePictureDTO;
@@ -17,7 +17,6 @@ import com.sofang.web.form.DataTableSearch;
 import com.sofang.web.form.HouseForm;
 import com.sofang.web.form.PhotoForm;
 import com.sofang.web.form.RentFilter;
-import org.elasticsearch.search.SearchService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

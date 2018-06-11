@@ -1,9 +1,9 @@
-package com.sofang.service.impl;
+package com.sofang.service.house;
 
 import java.io.File;
 import java.io.InputStream;
 
-import com.sofang.service.QiNiuService;
+import com.sofang.service.house.QiNiuService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

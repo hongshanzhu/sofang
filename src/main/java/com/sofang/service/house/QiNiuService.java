@@ -1,4 +1,4 @@
-package com.sofang.service;
+package com.sofang.service.house;
 
 import java.io.File;
 import java.io.InputStream;

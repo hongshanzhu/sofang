@@ -1,4 +1,4 @@
-package com.sofang.service;
+package com.sofang.service.house;
 
 import java.util.List;
 import java.util.Map;

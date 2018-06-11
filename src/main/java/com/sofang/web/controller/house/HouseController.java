@@ -1,9 +1,9 @@
 package com.sofang.web.controller.house;
 
 import com.sofang.base.*;
-import com.sofang.service.AddressService;
-import com.sofang.service.HouseService;
-import com.sofang.service.UserService;
+import com.sofang.service.house.AddressService;
+import com.sofang.service.house.HouseService;
+import com.sofang.service.user.UserService;
 import com.sofang.web.dto.*;
 import com.sofang.web.form.RentFilter;
 import org.springframework.beans.factory.annotation.Autowired;

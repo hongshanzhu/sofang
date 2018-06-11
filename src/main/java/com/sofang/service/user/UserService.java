@@ -1,4 +1,4 @@
-package com.sofang.service;
+package com.sofang.service.user;
 
 import com.sofang.base.ServiceResult;
 import com.sofang.entity.User;

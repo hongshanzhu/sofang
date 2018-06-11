@@ -1,7 +1,7 @@
 package com.sofang.security;
 
 import com.sofang.entity.User;
-import com.sofang.service.UserService;
+import com.sofang.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
