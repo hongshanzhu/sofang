@@ -10,6 +10,7 @@ import com.sofang.repository.*;
 import com.sofang.service.ElasticsearchService;
 import com.sofang.service.house.HouseService;
 import com.sofang.service.house.QiNiuService;
+import com.sofang.service.search.SearchService;
 import com.sofang.web.dto.HouseDTO;
 import com.sofang.web.dto.HouseDetailDTO;
 import com.sofang.web.dto.HousePictureDTO;
@@ -66,6 +67,9 @@ public class HouseServiceImpl implements HouseService {
 
     @Autowired
     private ElasticsearchService elasticsearchService;
+
+    @Autowired
+    private SearchService searchService;
 
 
     @Override
@@ -236,7 +240,7 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public ServiceMultiResult<HouseDTO> query(RentFilter rentFilter) {
         if (rentFilter.getKeywords() != null && !rentFilter.getKeywords().isEmpty()) {
-            ServiceMultiResult<Long> serviceResult = elasticsearchService.query(rentFilter);
+            ServiceMultiResult<Long> serviceResult = searchService.query(rentFilter);
             if (serviceResult.getTotal() == 0) {
                 return new ServiceMultiResult<>(0, new ArrayList<>());
             }
@@ -355,7 +359,7 @@ public class HouseServiceImpl implements HouseService {
         houseRepository.save(house);
 
         if (house.getStatus() == HouseStatus.PASSES.getValue()) {
-            //searchService.index(house.getId());
+             searchService.index(house.getId());
         }
 
         return ServiceResult.success();
@@ -450,6 +454,13 @@ public class HouseServiceImpl implements HouseService {
         }
 
         houseRepository.updateStatus(id, status);
+
+        //上架更新索引，其他情况删除索引
+        if(status == HouseStatus.PASSES.getValue()){
+            searchService.index(id);
+        }else{
+            searchService.remove(id);
+        }
 
         return ServiceResult.success();
     }
