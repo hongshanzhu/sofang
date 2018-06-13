@@ -9,24 +9,26 @@ import com.sofang.entity.HouseTag;
 import com.sofang.repository.HouseRepository;
 import com.sofang.repository.HouseTagRepository;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.DeleteByQueryAction;
-import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.elasticsearch.index.reindex.DeleteByQueryRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
+@Service
 public class SearchServiceImpl implements SearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
@@ -51,7 +53,7 @@ public class SearchServiceImpl implements SearchService {
     private ObjectMapper objectMapper;
 
     @Override
-    public void index(Long houseId) {
+    public boolean index(Long houseId) {
         House house = houseRepository.findOne(houseId);
         Preconditions.checkNotNull(house, "Index house " + houseId + " dose not exsit!");
         HouseIndexTemplate houseIndexTemplate = new HouseIndexTemplate();
@@ -64,6 +66,25 @@ public class SearchServiceImpl implements SearchService {
             houseIndexTemplate.setTags(tagStrings);
         }
 
+        SearchRequestBuilder builder = this.esClient.prepareSearch(INDEX_NAME).setTypes(INDEX_TYPE).setQuery(QueryBuilders.termQuery(HouseIndexKey.HOUSE_ID,
+                houseId));
+        logger.debug(builder.toString());
+        SearchResponse response = builder.get();
+        long totalHits = response.getHits().totalHits;
+        boolean success;
+        if(totalHits == 0){
+            success = create(houseIndexTemplate);
+        }else if(totalHits == 1){
+            String esId = response.getHits().getAt(0).getId();
+            success = update(esId, houseIndexTemplate);
+        }else{
+            success = deleteAndCreate(totalHits, houseIndexTemplate);
+        }
+
+        if(success){
+            logger.debug("Index success this house " + houseId);
+        }
+        return success;
     }
 
     private boolean create(HouseIndexTemplate indexTemplate){
