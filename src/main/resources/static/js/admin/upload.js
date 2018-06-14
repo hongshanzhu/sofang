@@ -549,7 +549,7 @@
                 '<div style="float: left; margin: 2px; padding: 2px; border: 1px dashed; width:' +
                 ' 120px; height: 100px;">' +
                 '<span><img src="http://omtagtyxe.bkt.clouddn.com/' +
-                photo_path + '" title="待选封面" />' +
+                photo_path + '" title="待选封面" width="120px" />' +
                 '<input style="margin-left: 5px;" type="radio" name="cover" value="' +
                 photo_path + '"/></span></div>'
             );

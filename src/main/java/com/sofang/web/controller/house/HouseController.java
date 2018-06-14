@@ -1,8 +1,10 @@
 package com.sofang.web.controller.house;
 
+import com.google.common.collect.Lists;
 import com.sofang.base.*;
 import com.sofang.service.house.AddressService;
 import com.sofang.service.house.HouseService;
+import com.sofang.service.search.SearchService;
 import com.sofang.service.user.UserService;
 import com.sofang.web.dto.*;
 import com.sofang.web.form.RentFilter;
@@ -30,6 +32,21 @@ public class HouseController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SearchService searchService;
+
+    @ResponseBody
+    @GetMapping("rent/house/autocomplete")
+    public ResponseEntity autoComplete(@RequestParam(value="prefix") String prefix){
+        if(prefix.isEmpty()){
+            return ResponseEntity.createByErrorCodeMessage(StatusCode.BAD_REQUEST);
+        }
+        ServiceResult<List<String>> result = searchService.suggest(prefix);
+        return ResponseEntity.ofSuccess(result);
+    }
+
+
 
     /**
      * 获取所有支持的城市
