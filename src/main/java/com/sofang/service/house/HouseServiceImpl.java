@@ -2,14 +2,10 @@ package com.sofang.service.house;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.qiniu.common.QiniuException;
-import com.qiniu.http.Response;
 import com.sofang.base.*;
 import com.sofang.entity.*;
 import com.sofang.repository.*;
 import com.sofang.service.ElasticsearchService;
-import com.sofang.service.house.HouseService;
-import com.sofang.service.house.QiNiuService;
 import com.sofang.service.search.SearchService;
 import com.sofang.web.dto.HouseDTO;
 import com.sofang.web.dto.HouseDetailDTO;
@@ -59,11 +55,9 @@ public class HouseServiceImpl implements HouseService {
     @Autowired
     private HouseTagRepository houseTagRepository;
 
-    @Autowired
-    private QiNiuService qiNiuService;
 
-    @Value("${qiniu.cdn.prefix}")
-    private String cdnPrefix;
+   /* @Value("${qiniu.cdn.prefix}")
+    private String cdnPrefix;*/
 
     @Autowired
     private ElasticsearchService elasticsearchService;
@@ -102,7 +96,7 @@ public class HouseServiceImpl implements HouseService {
         List<HousePictureDTO> pictureDTOS = Lists.newArrayList();
         housePictures.forEach(housePicture -> pictureDTOS.add(modelMapper.map(housePicture, HousePictureDTO.class)));
         houseDTO.setPictures(pictureDTOS);
-        houseDTO.setCover(this.cdnPrefix + houseDTO.getCover());
+        houseDTO.setCover(houseDTO.getCover());
 
         List<String> tags = houseForm.getTags();
         if (tags != null && !tags.isEmpty()) {
@@ -132,7 +126,7 @@ public class HouseServiceImpl implements HouseService {
         for (PhotoForm photoForm : form.getPhotos()) {
             HousePicture picture = new HousePicture();
             picture.setHouseId(houseId);
-            picture.setCdnPrefix(cdnPrefix);
+            //picture.setCdnPrefix(/*cdnPrefix*/);
             picture.setPath(photoForm.getPath());
             picture.setWidth(photoForm.getWidth());
             picture.setHeight(photoForm.getHeight());
@@ -202,7 +196,7 @@ public class HouseServiceImpl implements HouseService {
 
         houses.forEach(house -> {
             HouseDTO houseDTO = modelMapper.map(house, HouseDTO.class);
-            houseDTO.setCover(this.cdnPrefix + house.getCover());
+            houseDTO.setCover(house.getCover());
             houseDTOS.add(houseDTO);
         });
 
@@ -277,7 +271,7 @@ public class HouseServiceImpl implements HouseService {
         Map<Long, HouseDTO> idToHouseMap = Maps.newHashMap();
         houses.forEach(house -> {
             HouseDTO houseDTO = modelMapper.map(house, HouseDTO.class);
-            houseDTO.setCover(this.cdnPrefix + house.getCover());
+            houseDTO.setCover(/*this.cdnPrefix + */house.getCover());
             houseDTOS.add(houseDTO);
 
             houseIds.add(house.getId());
@@ -296,7 +290,7 @@ public class HouseServiceImpl implements HouseService {
         Iterable<House> houses = houseRepository.findAll(houseIds);
         houses.forEach(house -> {
             HouseDTO houseDTO = modelMapper.map(house, HouseDTO.class);
-            houseDTO.setCover(this.cdnPrefix + house.getCover());
+            houseDTO.setCover(/*this.cdnPrefix + */house.getCover());
             idToHouseMap.put(house.getId(), houseDTO);
         });
 
@@ -365,7 +359,7 @@ public class HouseServiceImpl implements HouseService {
         return ServiceResult.success();
     }
 
-    @Override
+    /*@Override
     public ServiceResult removePhoto(Long id) {
         HousePicture picture = housePictureRepository.findOne(id);
         if (picture == null) {
@@ -373,7 +367,7 @@ public class HouseServiceImpl implements HouseService {
         }
 
         try {
-            Response response = this.qiNiuService.delete(picture.getPath());
+            Response response  ;//= this.qiNiuService.delete(picture.getPath());
             if (response.isOK()) {
                 housePictureRepository.delete(id);
                 return ServiceResult.success();
@@ -385,7 +379,7 @@ public class HouseServiceImpl implements HouseService {
             return new ServiceResult(false, e.getMessage());
         }
     }
-
+*/
     @Override
     @Transactional
     public ServiceResult updateCover(Long coverId, Long targetId) {

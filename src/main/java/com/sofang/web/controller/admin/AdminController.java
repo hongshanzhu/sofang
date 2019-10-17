@@ -1,13 +1,11 @@
 package com.sofang.web.controller.admin;
 
 import com.google.common.base.Strings;
-import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.sofang.base.*;
 import com.sofang.service.house.AddressService;
 import com.sofang.service.house.HouseService;
-import com.sofang.service.house.QiNiuService;
 import com.sofang.web.dto.*;
 import com.sofang.web.form.DataTableSearch;
 import com.sofang.web.form.HouseForm;
@@ -36,12 +34,6 @@ import java.util.Map;
  */
 @Controller
 public class AdminController {
-    @Autowired
-    private QiNiuService qiNiuService;
-
-    @Autowired
-    private Gson gson;
-
     @Autowired
     private AddressService addressService;
 
@@ -91,10 +83,10 @@ public class AdminController {
 
     /**
      * 上传图片接口
-     * @param file
+     * @param
      * @return
      */
-    @PostMapping(value = "admin/upload/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+   /* @PostMapping(value = "admin/upload/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public ResponseEntity uploadPhoto(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
@@ -104,8 +96,8 @@ public class AdminController {
             InputStream inputStream = file.getInputStream();
             Response response = qiNiuService.uploadFile(inputStream);
             if (response.isOK()) {
-                QiNiuPutRet ret = gson.fromJson(response.bodyString(), QiNiuPutRet.class);
-                return ResponseEntity.ofSuccess(ret);
+                //TODO fastDF
+                return ResponseEntity.ofSuccess(null);
             } else {
                 return ResponseEntity.createByErrorCodeMessage(StatusCode.INTERNAL_SERVER_ERROR);
             }
@@ -122,7 +114,7 @@ public class AdminController {
             return ResponseEntity.createByErrorCodeMessage(StatusCode.INTERNAL_SERVER_ERROR);
         }
     }
-
+*/
     @ResponseBody
     @PostMapping("admin/add/house")
     public ResponseEntity addHouse(@Valid @ModelAttribute("form-house-add") HouseForm houseForm,
@@ -208,7 +200,7 @@ public class AdminController {
      * @param id
      * @return
      */
-    @DeleteMapping("admin/house/photo")
+    /*@DeleteMapping("admin/house/photo")
     @ResponseBody
     public ResponseEntity removeHousePhoto(@RequestParam(value = "id") Long id) {
         ServiceResult result = this.houseService.removePhoto(id);
@@ -219,7 +211,7 @@ public class AdminController {
             return ResponseEntity.createByErrorCodeMessage(HttpStatus.BAD_REQUEST.value(), result.getMessage());
         }
     }
-
+*/
     /**
      * 修改封面接口
      * @param coverId

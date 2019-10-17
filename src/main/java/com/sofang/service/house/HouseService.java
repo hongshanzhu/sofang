@@ -43,7 +43,7 @@ public interface HouseService {
      */
     ServiceResult update(HouseForm houseForm);
 
-    ServiceResult removePhoto(Long id);
+    //ServiceResult removePhoto(Long id);
 
     ServiceResult updateCover(Long coverId, Long targetId);
 

@@ -1,7 +1,5 @@
 package com.sofang.base;
 
-import org.omg.PortableInterceptor.HOLDING;
-
 /**
  * 房源状态
  */
