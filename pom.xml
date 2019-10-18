@@ -8,7 +8,10 @@
     <artifactId>sofang-project</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <modules></modules>
+    <modules>
+        <module>sofang-parent</module>
+        <module>sofang-admin</module>
+    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
