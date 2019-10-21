@@ -1,12 +1,12 @@
 package com.sofang.web.controller.admin;
 
 import com.google.common.base.Strings;
-import com.sofang.base.*;
-import com.sofang.service.house.AddressService;
-import com.sofang.service.house.HouseService;
-import com.sofang.web.dto.*;
-import com.sofang.web.form.DataTableSearch;
-import com.sofang.web.form.HouseForm;
+import com.sofang.base.common.*;
+import com.sofang.base.service.house.AddressService;
+import com.sofang.base.service.house.HouseService;
+import com.sofang.base.service.dto.*;
+import com.sofang.base.service.form.DataTableSearch;
+import com.sofang.base.service.form.HouseForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

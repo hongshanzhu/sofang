@@ -1,12 +1,12 @@
 package com.sofang.web.controller.house;
 
-import com.sofang.base.*;
-import com.sofang.service.house.AddressService;
-import com.sofang.service.house.HouseService;
-import com.sofang.service.search.SearchService;
-import com.sofang.service.user.UserService;
-import com.sofang.web.dto.*;
-import com.sofang.web.form.RentFilter;
+import com.sofang.base.common.*;
+import com.sofang.base.service.house.AddressService;
+import com.sofang.base.service.house.HouseService;
+import com.sofang.base.service.search.SearchService;
+import com.sofang.base.service.user.UserService;
+import com.sofang.base.service.dto.*;
+import com.sofang.base.service.form.RentFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

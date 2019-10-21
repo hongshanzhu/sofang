@@ -12,17 +12,13 @@
     <groupId>com.sofang.admin</groupId>
     <artifactId>sofang-admin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- jpa相关依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -60,11 +56,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <!-- Thymeleaf方言支持SpringSecurity 依赖-->
@@ -195,6 +186,11 @@
             <artifactId>spring-security-test</artifactId>
             <version>4.2.13.RELEASE</version>
             <scope>test</scope>
-        </dependency>
+        </dependency><dependency>
+        <groupId>com.sofang.parent</groupId>
+        <artifactId>sofang-base</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <scope>compile</scope>
+    </dependency>
     </dependencies>
 </project>

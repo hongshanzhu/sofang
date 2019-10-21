@@ -1,6 +1,6 @@
 package com.sofang.web.controller;
 
-import com.sofang.base.ResponseEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +41,6 @@ public class HomeController {
     @ResponseBody
     @GetMapping("/get")
     public ResponseEntity get(){
-        return ResponseEntity.createBySuccessMessage("Success!");
+        return ResponseEntity.ok().build();
     }
 }
