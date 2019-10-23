@@ -40,24 +40,6 @@ public class AppErrorController implements ErrorController{
         this.errorAttributes = errorAttributes;
     }
 
-    /**
-     * 错误拦截页面
-     * @param response
-     * @return
-     */
-    @RequestMapping(value = ERROR_PATH, produces = "text/html")
-    public String errorPageHandler(HttpServletResponse response){
-        Integer status = response.getStatus();
-        switch(status){
-            case 403 :
-                return "403";
-            case 404 :
-                return "404";
-            case 500 :
-                return "500";
-        }
-        return "index";
-    }
 
     /**
      * 错误返回json

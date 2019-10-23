@@ -1,4 +1,4 @@
-package com.sofang.config;
+package com.sofang.base.config;
 
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  * Created by gegf.
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "com.sofang.*")
+@EnableJpaRepositories(basePackages = "com.sofang.base.repository")
 @EnableTransactionManagement
 public class JPAConfig {
     @Bean
@@ -35,7 +35,7 @@ public class JPAConfig {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(dataSource());
         entityManagerFactory.setJpaVendorAdapter(japVendor);
-        entityManagerFactory.setPackagesToScan("com.sofang.entity");
+        entityManagerFactory.setPackagesToScan("com.sofang.base.entity");
         return entityManagerFactory;
     }
 

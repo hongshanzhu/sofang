@@ -1,4 +1,4 @@
-package com.sofang.config;
+package com.sofang.base.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeansException;

@@ -12,7 +12,6 @@
         <module>sofang-admin</module>
         <module>sofang-auth</module>
         <module>sofang-base</module>
-        <module>sofang-config</module>
     </modules>
 
     <parent>

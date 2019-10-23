@@ -1,4 +1,4 @@
-package com.sofang.config;
+package com.sofang.base.config;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
